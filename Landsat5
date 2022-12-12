@@ -1,0 +1,72 @@
+//SCRIPT DE DESCARGA DE IMAGENES LANDSAT 5 C2L2 EN GOOGLE EARTH ENGINE
+//FILTRO GEOMETRÍA (geometry) MODIFICABLE SEGÚN REQUERIMIENTOS DEL USUARIO/A
+
+var landsat_5 = ee.ImageCollection("LANDSAT/LT05/C02/T1_L2")
+.filterDate("2013-01-01","2013-04-30")
+.filterMetadata("CLOUD_COVER","Less_than",20)
+.filterBounds(geometry)
+
+// Aplicar factores de escala
+function applyScaleFactors(landsat_5) {
+  var opticalBands = landsat_5.select('SR_B.').multiply(0.0000275).add(-0.2);
+  var thermalBand = landsat_5.select('ST_B6').multiply(0.00341802).add(149.0);
+  return landsat_5.addBands(opticalBands, null, true)
+              .addBands(thermalBand, null, true);
+}
+
+dataset = landsat_5.map(applyScaleFactors);
+
+print(dataset);
+
+var dataset = dataset.sort("CLOUD_COVER").first()
+print(dataset)
+
+var dataset = dataset.clip(geometry);
+
+print(dataset)
+
+
+Map.addLayer(dataset,{
+  min:0.0,
+  max:0.3,
+  bands:["SR_B5","SR_B4","SR_B3"]
+}, "Analisis de Cobertura");
+
+var viss={
+  min:-0.2,
+  max:0.8,
+  palette:['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
+'74A901', '66A000','529400','3E8601','207401','056201','004C44',
+'023B01','012E01','011D01','011301']
+}
+
+
+//CALCULOS
+
+var NDVI = dataset.expression("(NIR-RED)/(NIR+RED)", {
+  "NIR": dataset.select("SR_B4"),
+  "RED": dataset.select("SR_B3")
+})
+
+
+
+Map.addLayer(NDVI, viss, "INDICE NDVI")
+
+Export.image.toDrive({
+   image:dataset.select("SR_B5","SR_B4","SR_B3"),
+   description:'Coberura_2013',
+   folder:'COBERTURA',
+   
+   region:geometry,
+   scale:30,
+});
+
+Export.image.toDrive({
+   image:NDVI,
+   description:'NDVI_2013',
+   folder:'NDVI',
+   
+   region:geometry,
+   scale:30,
+});
+
