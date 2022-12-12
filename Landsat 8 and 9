@@ -1,0 +1,78 @@
+//SCRIPT DE DESCARGA DE IMAGENES LANDSAT 8 C2L2 EN GOOGLE EARTH ENGINE
+//FILTRO GEOMETRÍA (geometry) MODIFICABLE SEGÚN REQUERIMIENTOS DEL USUARIO/A
+//PARA DESCARGA DE LANDSAT 9, CAMBIAR CODIGO DE PRODUCTO (LINEA 5) POR "LANDSAT/LC09/C02/T1_L2"
+
+var landsat_8 = ee.ImageCollection("LANDSAT/LC08/C02/T1_L2")
+.filterDate("2021-01-01","2021-04-30")
+.filterMetadata("CLOUD_COVER","Less_than",20)
+.filterBounds(geometry)
+
+
+// Aplicar factores de escala
+function applyScaleFactors(landsat_8) {
+  var opticalBands = landsat_8.select('SR_B.').multiply(0.0000275).add(-0.2);
+  var thermalBands = landsat_8.select('ST_B.*').multiply(0.00341802).add(149.0);
+  return landsat_8.addBands(opticalBands, null, true)
+              .addBands(thermalBands, null, true);
+}
+
+
+dataset = landsat_8.map(applyScaleFactors);
+print(dataset);
+
+var dataset = dataset.sort("CLOUD_COVER").first()
+print(dataset)
+
+var dataset = dataset.clip(geometry);
+
+print(dataset)
+
+
+Map.addLayer(dataset,{
+  min:0.0,
+  max:0.3,
+  bands:["SR_B6","SR_B5","SR_B4"]
+}, "Analisis de Cobertura");
+
+//PARAMETROS VISUALIZACION
+
+var viss={
+  min:-0.2,
+  max:0.8,
+  palette:['FFFFFF', 'CE7E45', 'DF923D', 'F1B555', 'FCD163', '99B718',
+'74A901', '66A000','529400','3E8601','207401','056201','004C44',
+'023B01','012E01','011D01','011301']
+}
+
+//CALCULOS
+
+// NDVI
+{
+var ndvi = dataset.normalizedDifference(['SR_B5', 'SR_B4']).rename('NDVI');
+var ndviParams = {min: -1, max: 1, palette: ['blue', 'white', 'green']};
+print(ndvi,'ndvi');
+Map.addLayer(ndvi, ndviParams, 'ndvi');
+}
+
+
+Map.addLayer(ndvi, viss, "INDICE NDVI")
+
+Export.image.toDrive({
+   image:dataset.select("SR_B6","SR_B5","SR_B4"),
+   description:'Coberura_2022',
+   folder:'COBERTURA',
+   
+   region:geometry,
+   scale:30,
+});
+
+
+
+Export.image.toDrive({
+   image:ndvi,
+   description:'NDVI_2022',
+   folder:'NDVI',
+   
+   region:geometry,
+   scale:30,
+});
