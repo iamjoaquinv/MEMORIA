@@ -1,0 +1,184 @@
+gc()
+## - Instalar rLandsat8 -
+library(devtools)
+## - install_url("https://github.com/Terradue/rLandsat8/releases/download/v0.1-SNAPSHOT/rLandsat8_0.1.0.tar.gz") ## ejecutar solo si se desea utilizar este paquete
+## - Cargar librerias utilizadas, asegurarse de que esten instaladas -
+## - Prestar atencion a comentarios en el codigo para evitar complicaciones -
+library(rLandsat8)
+library(insol)
+library(rgdal)
+library(raster)
+#library(spatialEco)
+require(sp)
+library(ggplot2)
+library(dplyr)
+library(rgdal)
+require(rgdal)
+require(lubridate)
+library(data.table)
+library(timeDate)
+require(stringr)
+library(zoo)
+library(gdistance)
+library(PBSmapping)
+library(Kendall)
+
+
+#Máscara
+
+ROI <- readOGR(dsn = "./shp", layer = "ROI_N")
+
+
+
+#Recorte de rasters
+
+#1985
+
+raster1985 <- raster("./ndvi/ndvi_1985.tif")
+ndvi1985 <- mask(raster1985, ROI)
+ndvi1985 <- crop(ndvi1985, extent(ROI))
+writeRaster(ndvi1985, filename="ndvi1985.tif", format="GTiff", overwrite=TRUE)
+
+#1986
+raster1986 <- raster("./ndvi/ndvi_1986.tif")
+ndvi1986 <- mask(raster1986, ROI)
+ndvi1986 <- crop(ndvi1986, extent(ROI))
+writeRaster(ndvi1986, filename="ndvi1986.tif", format="GTiff", overwrite=TRUE)
+
+#1998
+raster1998 <- raster("./ndvi/ndvi_1998.tif")
+ndvi1998 <- mask(raster1998, ROI)
+ndvi1998 <-   crop(ndvi1998, extent(ROI))
+writeRaster(ndvi1998, filename="ndvi1998.tif", format="GTiff", overwrite=TRUE)
+
+#1999
+
+raster1999 <- raster("./ndvi/ndvi_1999.tif")
+ndvi1999 <- mask(raster1999, ROI)
+ndvi1999 <- crop(ndvi1999, extent(ROI))
+writeRaster(ndvi1999, filename="ndvi1999.tif", format="GTiff", overwrite=TRUE)
+
+#2000
+
+raster2000 <- raster("./ndvi/ndvi_2000.tif")
+ndvi2000 <- mask(raster2000, ROI)
+ndvi2000 <- crop(ndvi2000, extent(ROI))
+writeRaster(ndvi2000, filename="ndvi2000.tif", format="GTiff", overwrite=TRUE)
+
+#2003
+
+raster2003 <- raster("./ndvi/ndvi_2003.tif")
+ndvi2003 <- mask(raster2003, ROI)
+ndvi2003 <- crop(ndvi2003, extent(ROI))
+writeRaster(ndvi2003, filename="ndvi2003.tif", format="GTiff", overwrite=TRUE)
+
+#2006
+
+raster2006 <- raster("./ndvi/ndvi_2006.tif")
+ndvi2006 <- mask(raster2006, ROI)
+ndvi2006 <- crop(ndvi2006, extent(ROI))
+writeRaster(ndvi2006, filename="ndvi2006.tif", format="GTiff", overwrite=TRUE)
+
+#2008
+
+raster2008 <- raster("./ndvi/ndvi_2008.tif")
+ndvi2008 <- mask(raster2008, ROI)
+ndvi2008 <- crop(ndvi2008, extent(ROI))
+writeRaster(ndvi2008, filename="ndvi2008.tif", format="GTiff", overwrite=TRUE)
+
+#2009
+
+raster2009 <- raster("./ndvi/ndvi_2009.tif")
+ndvi2009 <- mask(raster2009, ROI)
+ndvi2009 <- crop(ndvi2009, extent(ROI))
+writeRaster(ndvi2008, filename="ndvi2009.tif", format="GTiff", overwrite=TRUE)
+
+#2010
+
+raster2010 <- raster("./ndvi/ndvi_2010.tif")
+ndvi2010 <- mask(raster2010, ROI)
+ndvi2010 <- crop(ndvi2010, extent(ROI))
+writeRaster(ndvi2010, filename="ndvi2010.tif", format="GTiff", overwrite=TRUE)
+
+#2015
+
+raster2015 <- raster("./ndvi/ndvi_2015.tif")
+ndvi2015 <- mask(raster2015, ROI)
+ndvi2015 <- crop(ndvi2015, extent(ROI))
+writeRaster(ndvi2015, filename="ndvi2015.tif", format="GTiff", overwrite=TRUE)
+
+#2017
+
+raster2017 <- raster("./ndvi/ndvi_2017.tif")
+ndvi2017 <- mask(raster2017, ROI)
+ndvi2017 <- crop(ndvi2017, extent(ROI))
+writeRaster(ndvi2017, filename="ndvi2017.tif", format="GTiff", overwrite=TRUE)
+
+#2018
+raster2018 <- raster("./ndvi/ndvi_2018.tif")
+ndvi2018 <- mask(raster2018, ROI)
+ndvi2018 <- crop(ndvi2018, extent(ROI))
+writeRaster(ndvi2018, filename="ndvi2018.tif", format="GTiff", overwrite=TRUE)
+
+#2019
+
+raster2019 <- raster("./ndvi/ndvi_2019.tif")
+ndvi2019 <- mask(raster2019, ROI)
+ndvi2019 <- crop(ndvi2019, extent(ROI))
+writeRaster(ndvi2019, filename="ndvi2019.tif", format="GTiff", overwrite=TRUE)
+
+#2020
+
+raster2020 <- raster("./ndvi/ndvi_2020.tif")
+ndvi2020 <- mask(raster2020, ROI)
+ndvi2020 <- crop(ndvi2020, extent(ROI))
+writeRaster(ndvi2020, filename="ndvi2020.tif", format="GTiff", overwrite=TRUE)
+
+#2021
+raster2021 <- raster("./ndvi/ndvi_2021.tif")
+ndvi2021 <- mask(raster2021, ROI)
+ndvi2021 <- crop(ndvi2021, extent(ROI))
+writeRaster(ndvi2021, filename="ndvi2021.tif", format="GTiff", overwrite=TRUE)
+
+#2022
+raster2022 <- raster("./ndvi/ndvi_2022.tif")
+ndvi2022 <- mask(raster2022, ROI)
+ndvi2022 <- crop(ndvi2022, extent(ROI))
+writeRaster(ndvi2022, filename="ndvi2022.tif", format="GTiff", overwrite=TRUE)
+
+
+#stack
+
+stackRasters <- stack(ndvi1985, ndvi1986, ndvi1998, ndvi1999, ndvi2000, ndvi2003, ndvi2006, ndvi2008, ndvi2009, ndvi2010, ndvi2015, ndvi2017, ndvi2019, ndvi2020, ndvi2021, ndvi2022)
+sbrick <- brick(stackRasters)
+boxplot(sbrick, xlab="fecha", ylab="raster")
+rasters <-brick(stack(stackRasters))
+writeRaster(rasters, filename="secuencia_rasterb.tif", format="GTiff", overwrite=TRUE)
+
+
+
+##Calculo de serie temporal de los pixeles
+
+fun_k <- function(x){return(unlist(MannKendall(x)))}
+kendal_result <- calc(rasters, fun_k)
+
+
+#Exportar tendencia (tau) a un tif
+
+writeRaster(kendal_result$tau, ("tendenciatau.tif"), format="GTiff", overwrite=TRUE)
+
+##Calculo de serie temporal de los pixeles
+
+fun_k <- function(x){return(unlist(MannKendall(x)))}
+kendall_result <- calc(rasters, fun_k)
+kendall_result
+#Exportar tendencia (tau) a un tif
+
+writeRaster(kendall_result$tau, filename="tau.tif", format="GTiff", overwrite=TRUE)
+
+#reclasificacion para tendencia positiva
+
+m <- c(-1, -0.25, -1, -0.25, 0.5, 0, 0.5, 1, 1)
+rclmat <- matrix(m, ncol=3, byrow=TRUE)
+rc_tau <- reclassify(kendal_result$tau, rclmat)
+writeRaster(rc_tau, filename="rc_taub.tif", format="GTiff", overwrite=TRUE)
